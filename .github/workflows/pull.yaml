@@ -44,7 +44,14 @@ jobs:
         run: terraform show -json tfplan > tfplan.json
   
       - name: Comment Plan on PR
-        uses: infracost/terraform-github-actions@v1.7.0
+        uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.ACCESS_GITHUB_TOKEN }}
-          path: tfplan.json
+          script: |
+            const fs = require('fs');
+            const plan = fs.readFileSync('tfplan.json', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### Terraform Plan\n\n\`\`\`json\n${plan}\n\`\`\``
+            });
