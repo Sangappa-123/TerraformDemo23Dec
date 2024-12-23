@@ -1,4 +1,4 @@
-name: Terraform merging Statergies
+name: Terraform pull
 
 on:
   workflow_dispatch:
@@ -38,7 +38,7 @@ jobs:
         
       - name: Terraform Plan
         if: github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/heads/feature/')
-        run: terraform plan -out=tfplan -var-file="dev.tfvars"
+        run: terraform plan -var-file="dev.tfvars"
 
       - name: Check Plan File
         if: success()
