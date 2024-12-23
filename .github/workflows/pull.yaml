@@ -35,14 +35,19 @@ jobs:
 
       - name: Validate Terraform
         run: terraform validate
-
+        
       - name: Terraform Plan
         if: github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/heads/feature/')
         run: terraform plan -out=tfplan -var-file="dev.tfvars"
-        
+
+      - name: Check Plan File
+        if: success()
+        run: test -f tfplan
+
       - name: Show Plan
+        if: success()
         run: terraform show -json tfplan > tfplan.json
-  
+        
       - name: Comment Plan on PR
         uses: actions/github-script@v6
         with:
