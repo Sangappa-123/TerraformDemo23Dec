@@ -44,7 +44,7 @@ jobs:
         run: terraform show -json tfplan > tfplan.json
   
       - name: Comment Plan on PR
-        uses: marrtins/terraform-comment@v1.1
+        uses: infracost/terraform-github-actions@v1.7.0
         with:
-          tf-plan-json: tfplan.json
           github-token: ${{ secrets.ACCESS_GITHUB_TOKEN }}
+          path: tfplan.json
